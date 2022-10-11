@@ -1,0 +1,54 @@
+class Solution {
+    private int result = 0;
+    
+    private boolean isSafe(char matrix[][], int row, int col, int index, String target) {
+        if(row < 0 || col < 0 || row >= matrix.length || col >= matrix[0].length || index == target.length()) {
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private void dfs(char matrix[][], int index, int row, int col, String target) {
+        if(!isSafe(matrix, row, col, index, target)) {
+            return;
+        }
+        
+        char ch = target.charAt(index);
+        
+        if(ch != matrix[row][col]) {
+            return;
+        }
+        
+        if(index == target.length() - 1) {
+            result++;
+            return;
+        }
+        
+        matrix[row][col] = '.';
+        
+        dfs(matrix, index + 1, row + 1, col, target);
+        dfs(matrix, index + 1, row - 1, col, target);
+        dfs(matrix, index + 1, row, col + 1, target);
+        dfs(matrix, index + 1, row, col - 1, target);
+        
+        matrix[row][col] = ch;
+    }
+    
+    public int findOccurrence(char matrix[][], String target) {
+        // Write your code here
+        result = 0;
+        int row = matrix.length, col = matrix[0].length;
+        
+        for(int i = 0 ; i < row ; i++) {
+            for(int j = 0 ; j < col ; j++) {
+                if(matrix[i][j] == target.charAt(0)) {
+                    dfs(matrix, 0, i, j, target); 
+                }
+                
+            }  
+        }
+
+        return result;
+    }
+}
